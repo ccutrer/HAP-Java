@@ -1,6 +1,8 @@
 package com.beowulfe.hap.accessories;
 
-import com.beowulfe.hap.*;
+import com.beowulfe.hap.HomekitAccessory;
+import com.beowulfe.hap.HomekitCharacteristicChangeCallback;
+import com.beowulfe.hap.Service;
 import com.beowulfe.hap.accessories.properties.WindowCoveringPositionState;
 import com.beowulfe.hap.impl.services.WindowCoveringService;
 import java.util.Collection;
@@ -35,13 +37,6 @@ public interface WindowCovering extends HomekitAccessory {
    */
   CompletableFuture<WindowCoveringPositionState> getPositionState();
 
-  /**
-   * Retrieves an indication that the window covering is obstructed from moving
-   *
-   * @return a future that will contain a boolean indicating whether an obstruction is present
-   */
-  CompletableFuture<Boolean> getObstructionDetected();
-
   @Override
   default Collection<Service> getServices() {
     return Collections.singleton(new WindowCoveringService(this));
@@ -55,15 +50,6 @@ public interface WindowCovering extends HomekitAccessory {
    * @throws Exception when the change cannot be made
    */
   CompletableFuture<Void> setTargetPosition(int position) throws Exception;
-
-  /**
-   * Sets the hold position state
-   *
-   * @param hold whether or not to hold the current position state
-   * @return a future that completes when the change is made
-   * @throws Exception when the change cannot be made
-   */
-  CompletableFuture<Void> setHoldPosition(boolean hold) throws Exception;
 
   /**
    * Subscribes to changes in the current position.
@@ -86,13 +72,6 @@ public interface WindowCovering extends HomekitAccessory {
    */
   void subscribePositionState(HomekitCharacteristicChangeCallback callback);
 
-  /**
-   * Subscribes to changes in the obstruction detected state
-   *
-   * @param callback the function to call when the state changes.
-   */
-  void subscribeObstructionDetected(HomekitCharacteristicChangeCallback callback);
-
   /** Unsubscribes from changes in the current position. */
   void unsubscribeCurrentPosition();
 
@@ -101,7 +80,4 @@ public interface WindowCovering extends HomekitAccessory {
 
   /** Unsubscribes from changes in the position state */
   void unsubscribePositionState();
-
-  /** Unsubscribes from changes in the obstruction detected state */
-  void unsubscribeObstructionDetected();
 }

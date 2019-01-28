@@ -12,7 +12,7 @@ public class PositionStateCharacteristic extends EnumCharacteristic
   private final WindowCovering windowCovering;
 
   public PositionStateCharacteristic(WindowCovering windowCovering) {
-    super("00000072-0000-1000-8000-0026BB765291", false, true, "The position state", 2);
+    super("00000072-0000-1000-8000-0026BB765291", false, true, "Position State", 2);
     this.windowCovering = windowCovering;
   }
 

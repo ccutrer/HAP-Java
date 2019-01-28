@@ -12,7 +12,7 @@ public class TargetPositionCharacteristic extends IntegerCharacteristic
   private final WindowCovering windowCovering;
 
   public TargetPositionCharacteristic(WindowCovering windowCovering) {
-    super("0000007C-0000-1000-8000-0026BB765291", true, true, "The target position", 0, 100, "%");
+    super("0000007C-0000-1000-8000-0026BB765291", true, true, "Target Position", 0, 100, "%");
     this.windowCovering = windowCovering;
   }
 

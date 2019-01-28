@@ -12,7 +12,7 @@ public class CurrentPositionCharacteristic extends IntegerCharacteristic
   private final WindowCovering windowCovering;
 
   public CurrentPositionCharacteristic(WindowCovering windowCovering) {
-    super("0000006D-0000-1000-8000-0026BB765291", false, true, "The current position", 0, 100, "%");
+    super("0000006D-0000-1000-8000-0026BB765291", false, true, "Current Position", 0, 100, "%");
     this.windowCovering = windowCovering;
   }
 
