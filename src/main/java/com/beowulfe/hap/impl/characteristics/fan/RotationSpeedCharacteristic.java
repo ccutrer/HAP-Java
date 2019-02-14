@@ -1,7 +1,7 @@
 package com.beowulfe.hap.impl.characteristics.fan;
 
 import com.beowulfe.hap.HomekitCharacteristicChangeCallback;
-import com.beowulfe.hap.accessories.Fan;
+import com.beowulfe.hap.accessories.characteristics.RotationSpeed;
 import com.beowulfe.hap.characteristics.EventableCharacteristic;
 import com.beowulfe.hap.characteristics.IntegerCharacteristic;
 import java.util.concurrent.CompletableFuture;
@@ -9,9 +9,9 @@ import java.util.concurrent.CompletableFuture;
 public class RotationSpeedCharacteristic extends IntegerCharacteristic
     implements EventableCharacteristic {
 
-  private final Fan fan;
+  private final RotationSpeed fan;
 
-  public RotationSpeedCharacteristic(Fan fan) {
+  public RotationSpeedCharacteristic(RotationSpeed fan) {
     super("00000029-0000-1000-8000-0026BB765291", true, true, null, 0, 100, "%");
     this.fan = fan;
   }
