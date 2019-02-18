@@ -1,5 +1,6 @@
 package com.beowulfe.hap.accessories;
 
+import com.beowulfe.hap.AccessoryCategory;
 import com.beowulfe.hap.HomekitAccessory;
 import com.beowulfe.hap.HomekitCharacteristicChangeCallback;
 import com.beowulfe.hap.Service;
@@ -86,5 +87,9 @@ public interface SecuritySystem extends HomekitAccessory {
   @Override
   default Collection<Service> getServices() {
     return Collections.singleton(new SecuritySystemService(this));
+  }
+
+  default AccessoryCategory getAccessoryCategory() {
+    return AccessoryCategory.SECURITY_SYSTEM;
   }
 }

@@ -66,4 +66,13 @@ public interface HomekitAccessory {
    * @return the collection of services.
    */
   Collection<Service> getServices();
+
+  /**
+   * The category of the accessory to advertise to HomeKit.
+   *
+   * @return AccessoryCategory
+   */
+  default AccessoryCategory getAccessoryCategory() {
+    return AccessoryCategory.OTHER;
+  }
 }

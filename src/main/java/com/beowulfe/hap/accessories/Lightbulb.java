@@ -58,4 +58,8 @@ public interface Lightbulb extends HomekitAccessory {
     Optional<Color> result = Optional.empty();
     return result;
   }
+
+  default AccessoryCategory getAccessoryCategory() {
+    return AccessoryCategory.LIGHTBULB;
+  }
 }

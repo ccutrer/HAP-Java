@@ -60,4 +60,8 @@ public interface Outlet extends HomekitAccessory {
 
   /** Unsubscribes from changes in the binary state indicating whether hte outlet is in use. */
   void unsubscribeOutletInUse();
+
+  default AccessoryCategory getAccessoryCategory() {
+    return AccessoryCategory.OUTLET;
+  }
 }

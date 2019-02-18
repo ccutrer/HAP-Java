@@ -24,7 +24,13 @@ public class HomekitStandaloneAccessoryServer {
       InetAddress localhost,
       HomekitAuthInfo authInfo)
       throws UnknownHostException, IOException {
-    root = new HomekitRoot(accessory.getLabel(), webHandler, localhost, authInfo);
+    root =
+        new HomekitRoot(
+            accessory.getLabel(),
+            webHandler,
+            localhost,
+            authInfo,
+            accessory.getAccessoryCategory());
     root.addAccessory(accessory);
   }
 
@@ -34,7 +40,9 @@ public class HomekitStandaloneAccessoryServer {
       JmDNS jmdns,
       HomekitAuthInfo authInfo)
       throws UnknownHostException, IOException {
-    root = new HomekitRoot(accessory.getLabel(), webHandler, jmdns, authInfo);
+    root =
+        new HomekitRoot(
+            accessory.getLabel(), webHandler, jmdns, authInfo, accessory.getAccessoryCategory());
     root.addAccessory(accessory);
   }
 

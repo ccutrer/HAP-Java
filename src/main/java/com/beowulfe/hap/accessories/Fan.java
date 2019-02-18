@@ -56,4 +56,8 @@ public interface Fan extends HomekitAccessory, RotationDirection, RotationSpeed 
   default Optional<RotationSpeed> getRotationSpeedCharacteristic() {
     return Optional.of(this);
   }
+
+  default AccessoryCategory getAccessoryCategory() {
+    return AccessoryCategory.FAN;
+  }
 }

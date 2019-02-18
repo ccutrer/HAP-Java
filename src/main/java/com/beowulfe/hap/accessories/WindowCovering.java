@@ -1,5 +1,6 @@
 package com.beowulfe.hap.accessories;
 
+import com.beowulfe.hap.AccessoryCategory;
 import com.beowulfe.hap.HomekitAccessory;
 import com.beowulfe.hap.HomekitCharacteristicChangeCallback;
 import com.beowulfe.hap.Service;
@@ -80,4 +81,8 @@ public interface WindowCovering extends HomekitAccessory {
 
   /** Unsubscribes from changes in the position state */
   void unsubscribePositionState();
+
+  default AccessoryCategory getAccessoryCategory() {
+    return AccessoryCategory.WINDOW_COVERING;
+  }
 }

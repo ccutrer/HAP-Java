@@ -35,14 +35,23 @@ public class HomekitRoot {
   private int configurationIndex = 1;
 
   HomekitRoot(
-      String label, HomekitWebHandler webHandler, InetAddress localhost, HomekitAuthInfo authInfo)
+      String label,
+      HomekitWebHandler webHandler,
+      InetAddress localhost,
+      HomekitAuthInfo authInfo,
+      AccessoryCategory accessoryCategory)
       throws IOException {
-    this(label, webHandler, authInfo, new JmdnsHomekitAdvertiser(localhost));
+    this(label, webHandler, authInfo, new JmdnsHomekitAdvertiser(localhost, accessoryCategory));
   }
 
-  HomekitRoot(String label, HomekitWebHandler webHandler, JmDNS jmdns, HomekitAuthInfo authInfo)
+  HomekitRoot(
+      String label,
+      HomekitWebHandler webHandler,
+      JmDNS jmdns,
+      HomekitAuthInfo authInfo,
+      AccessoryCategory accessoryCategory)
       throws IOException {
-    this(label, webHandler, authInfo, new JmdnsHomekitAdvertiser(jmdns));
+    this(label, webHandler, authInfo, new JmdnsHomekitAdvertiser(jmdns, accessoryCategory));
   }
 
   HomekitRoot(

@@ -1,5 +1,6 @@
 package com.beowulfe.hap.impl.jmdns;
 
+import com.beowulfe.hap.AccessoryCategory;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -23,13 +24,17 @@ public class JmdnsHomekitAdvertiser {
   private String mac;
   private int port;
   private int configurationIndex;
+  private AccessoryCategory accessoryCategory;
 
-  public JmdnsHomekitAdvertiser(JmDNS jmdns) {
+  public JmdnsHomekitAdvertiser(JmDNS jmdns, AccessoryCategory accessoryCategory) {
     this.jmdns = jmdns;
+    this.accessoryCategory = accessoryCategory;
   }
 
-  public JmdnsHomekitAdvertiser(InetAddress localAddress) throws UnknownHostException, IOException {
+  public JmdnsHomekitAdvertiser(InetAddress localAddress, AccessoryCategory accessoryCategory)
+      throws UnknownHostException, IOException {
     jmdns = JmDNS.create(localAddress);
+    this.accessoryCategory = accessoryCategory;
   }
 
   public synchronized void advertise(String label, String mac, int port, int configurationIndex)
@@ -103,7 +108,7 @@ public class JmdnsHomekitAdvertiser {
     props.put("c#", Integer.toString(configurationIndex));
     props.put("s#", "1");
     props.put("ff", "0");
-    props.put("ci", "1");
+    props.put("ci", Integer.toString(accessoryCategory.getCode()));
 
     return ServiceInfo.create(SERVICE_TYPE, label, port, 1, 1, props);
   }

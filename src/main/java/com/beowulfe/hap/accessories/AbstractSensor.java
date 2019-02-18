@@ -1,5 +1,6 @@
 package com.beowulfe.hap.accessories;
 
+import com.beowulfe.hap.AccessoryCategory;
 import com.beowulfe.hap.HomekitAccessory;
 import com.beowulfe.hap.accessories.characteristics.LowBatteryStatus;
 import java.util.Optional;
@@ -14,5 +15,9 @@ public interface AbstractSensor extends HomekitAccessory {
   default Optional<LowBatteryStatus> getLowBatteryStatusCharacteristic() {
     Optional<LowBatteryStatus> result = Optional.empty();
     return result;
+  }
+
+  default AccessoryCategory getAccessoryCategory() {
+    return AccessoryCategory.SENSOR;
   }
 }

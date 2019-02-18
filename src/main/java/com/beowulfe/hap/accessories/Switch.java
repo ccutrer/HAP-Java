@@ -43,4 +43,8 @@ public interface Switch extends HomekitAccessory {
 
   /** Unsubscribes from changes in the binary state of the switch. */
   void unsubscribeSwitchState();
+
+  default AccessoryCategory getAccessoryCategory() {
+    return AccessoryCategory.SWITCH;
+  }
 }

@@ -142,9 +142,9 @@ public class HomekitServer {
       throws IOException {
     HomekitRoot root;
     if (jmdns != null) {
-      root = new HomekitRoot(label, http, jmdns, authInfo);
+      root = new HomekitRoot(label, http, jmdns, authInfo, AccessoryCategory.BRIDGE);
     } else {
-      root = new HomekitRoot(label, http, localAddress, authInfo);
+      root = new HomekitRoot(label, http, localAddress, authInfo, AccessoryCategory.BRIDGE);
     }
     root.addAccessory(new HomekitBridge(label, serialNumber, model, manufacturer));
     return root;

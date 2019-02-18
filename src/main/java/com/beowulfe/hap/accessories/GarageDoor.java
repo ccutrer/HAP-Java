@@ -78,4 +78,8 @@ public interface GarageDoor extends HomekitAccessory {
   default Collection<Service> getServices() {
     return Collections.singleton(new GarageDoorService(this));
   }
+
+  default AccessoryCategory getAccessoryCategory() {
+    return AccessoryCategory.GARAGE;
+  }
 }
