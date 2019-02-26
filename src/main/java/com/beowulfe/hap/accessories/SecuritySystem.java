@@ -4,12 +4,15 @@ import com.beowulfe.hap.AccessoryCategory;
 import com.beowulfe.hap.HomekitAccessory;
 import com.beowulfe.hap.HomekitCharacteristicChangeCallback;
 import com.beowulfe.hap.Service;
+import com.beowulfe.hap.accessories.characteristics.FaultStatus;
+import com.beowulfe.hap.accessories.characteristics.TamperedStatus;
 import com.beowulfe.hap.accessories.properties.CurrentSecuritySystemState;
 import com.beowulfe.hap.accessories.properties.SecuritySystemAlarmType;
 import com.beowulfe.hap.accessories.properties.TargetSecuritySystemState;
 import com.beowulfe.hap.impl.services.SecuritySystemService;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -83,6 +86,18 @@ public interface SecuritySystem extends HomekitAccessory {
 
   /** Unsubscribes from changes in the alarm type of the security system. */
   void unsubscribeAlarmTypeState();
+
+  /** returns the optional implementation of TamperedStatus */
+  default Optional<TamperedStatus> getTamperedStatusCharacteristic() {
+    Optional<TamperedStatus> result = Optional.empty();
+    return result;
+  }
+
+  /** returns the optional implementation of FaultStatus */
+  default Optional<FaultStatus> getFaultStatusCharacteristic() {
+    Optional<FaultStatus> result = Optional.empty();
+    return result;
+  }
 
   @Override
   default Collection<Service> getServices() {
