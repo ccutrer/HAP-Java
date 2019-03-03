@@ -4,6 +4,7 @@ import com.beowulfe.hap.HomekitAccessory;
 import com.beowulfe.hap.HomekitCharacteristicChangeCallback;
 import com.beowulfe.hap.Service;
 import com.beowulfe.hap.accessories.TemperatureSensor;
+import com.beowulfe.hap.accessories.properties.TemperatureUnit;
 import com.beowulfe.hap.accessories.properties.ThermostatMode;
 import com.beowulfe.hap.impl.services.ThermostatService;
 import java.util.Collection;
@@ -87,4 +88,16 @@ public interface BasicThermostat extends HomekitAccessory, TemperatureSensor {
   default Collection<Service> getServices() {
     return Collections.singleton(new ThermostatService(this));
   }
+
+  /**
+   * Retrieves the temperature unit of the thermostat. This is informational
+   * only, and HomeKit tells the user that this is the unit that the device
+   * is physically displaying.
+   *
+   * @return the temperature unit of the thermostat.
+   */
+  default TemperatureUnit getTemperatureUnit() {
+    return TemperatureUnit.CELSIUS;
+  }
+
 }

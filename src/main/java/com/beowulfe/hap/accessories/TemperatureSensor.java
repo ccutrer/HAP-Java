@@ -49,15 +49,4 @@ public interface TemperatureSensor extends AbstractSensor {
    * @return the maximum temperature.
    */
   double getMaximumTemperature();
-
-  /**
-   * Retrieves the temperature unit of the thermostat. The impact of this is unclear, as the actual
-   * temperature is always communicated in celsius degrees, and the iOS device uses the user's
-   * locale to determine the unit to convert to.
-   *
-   * @return the temperature unit of the thermostat.
-   */
-  default TemperatureUnit getTemperatureUnit() {
-    return TemperatureUnit.CELSIUS;
-  }
 }
