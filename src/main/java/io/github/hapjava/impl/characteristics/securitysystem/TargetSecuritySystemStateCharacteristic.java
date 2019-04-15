@@ -5,6 +5,7 @@ import io.github.hapjava.accessories.SecuritySystem;
 import io.github.hapjava.accessories.properties.TargetSecuritySystemState;
 import io.github.hapjava.characteristics.EnumCharacteristic;
 import io.github.hapjava.characteristics.EventableCharacteristic;
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 public class TargetSecuritySystemStateCharacteristic extends EnumCharacteristic
@@ -13,7 +14,13 @@ public class TargetSecuritySystemStateCharacteristic extends EnumCharacteristic
   private final SecuritySystem securitySystem;
 
   public TargetSecuritySystemStateCharacteristic(SecuritySystem securitySystem) {
-    super("00000067-0000-1000-8000-0026BB765291", true, true, "Target security system state", 3);
+    super(
+        "00000067-0000-1000-8000-0026BB765291",
+        true,
+        true,
+        "Target security system state",
+        3,
+        Arrays.asList(new Integer[] {0, 1, 3}));
     this.securitySystem = securitySystem;
   }
 
