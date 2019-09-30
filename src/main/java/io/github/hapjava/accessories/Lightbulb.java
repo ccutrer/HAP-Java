@@ -1,7 +1,8 @@
 package io.github.hapjava.accessories;
 
 import io.github.hapjava.*;
-import io.github.hapjava.impl.services.LightbulbService;
+import io.github.hapjava.services.LightbulbService;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;

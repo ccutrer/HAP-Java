@@ -3,7 +3,8 @@ package io.github.hapjava.accessories;
 import io.github.hapjava.HomekitAccessory;
 import io.github.hapjava.HomekitCharacteristicChangeCallback;
 import io.github.hapjava.Service;
-import io.github.hapjava.impl.services.LightSensorService;
+import io.github.hapjava.services.LightSensorService;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;

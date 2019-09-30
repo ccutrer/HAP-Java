@@ -1,9 +1,16 @@
 package io.github.hapjava.characteristics;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import javax.json.JsonNumber;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
+
+import io.github.hapjava.HomekitCharacteristicChangeCallback;
+import io.github.hapjava.impl.ExceptionalConsumer;
 
 /**
  * A characteristic that provides an Integer data type.
@@ -15,6 +22,8 @@ public abstract class IntegerCharacteristic extends BaseCharacteristic<Integer> 
   private final int minValue;
   private final int maxValue;
   private final String unit;
+  private final Optional<Supplier<CompletableFuture<Integer>>> getter;
+  private final Optional<ExceptionalConsumer<Integer>> setter;
 
   /**
    * Default constructor
@@ -30,16 +39,20 @@ public abstract class IntegerCharacteristic extends BaseCharacteristic<Integer> 
    */
   public IntegerCharacteristic(
       String type,
-      boolean isWritable,
-      boolean isReadable,
       String description,
       int minValue,
       int maxValue,
-      String unit) {
-    super(type, "int", isWritable, isReadable, description);
+      String unit,
+      Optional<Supplier<CompletableFuture<Integer>>> getter,
+      Optional<ExceptionalConsumer<Integer>> setter,
+      Optional<Consumer<HomekitCharacteristicChangeCallback>> subscriber,
+      Optional<Runnable> unsubscriber) {
+    super(type, "int",description, getter.isPresent(), setter.isPresent(), subscriber, unsubscriber);
     this.minValue = minValue;
     this.maxValue = maxValue;
     this.unit = unit;
+    this.getter = getter;
+    this.setter = setter;
   }
 
   /** {@inheritDoc} */
@@ -56,6 +69,16 @@ public abstract class IntegerCharacteristic extends BaseCharacteristic<Integer> 
             });
   }
 
+  @Override
+  protected CompletableFuture<Integer> getValue() {
+	 return getter.map(integerGetter -> integerGetter.get()).get();
+  }
+
+  @Override
+  protected void setValue(Integer value) throws Exception {
+	  setter.get().accept(value);
+}
+  
   /** {@inheritDoc} */
   @Override
   protected Integer getDefault() {

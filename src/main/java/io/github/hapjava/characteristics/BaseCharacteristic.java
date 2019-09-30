@@ -2,8 +2,12 @@ package io.github.hapjava.characteristics;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -12,22 +16,26 @@ import javax.json.JsonValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.github.hapjava.HomekitCharacteristicChangeCallback;
+import io.github.hapjava.impl.ExceptionalConsumer;
+
 /**
  * Base class for implementing {@link Characteristic}.
  *
  * @author Andy Lintner
  */
-public abstract class BaseCharacteristic<T> implements Characteristic {
+public abstract class BaseCharacteristic<T> implements Characteristic, EventableCharacteristic {
 
   private final Logger logger = LoggerFactory.getLogger(BaseCharacteristic.class);
 
   private final String type;
   private final String shortType;
   private final String format;
-  private final boolean isWritable;
-  private final boolean isReadable;
-  private final boolean isEventable;
   private final String description;
+  private final boolean isReadable;
+  private final boolean isWritable;
+  private final Optional<Consumer<HomekitCharacteristicChangeCallback>> subscriber;
+  private final Optional<Runnable> unsubscriber;
 
   /**
    * Default constructor
@@ -41,7 +49,11 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
    * @param description a description of the characteristic to be passed to the consuming device.
    */
   public BaseCharacteristic(
-      String type, String format, boolean isWritable, boolean isReadable, String description) {
+      String type, String format, String description,
+      boolean isReadable,
+      boolean isWritable,
+      Optional<Consumer<HomekitCharacteristicChangeCallback>> subscriber,
+      Optional<Runnable> unsubscriber) {
     if (type == null || format == null || description == null) {
       throw new NullPointerException();
     }
@@ -49,10 +61,11 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
     this.type = type;
     this.shortType = this.type.replaceAll("^0*([0-9a-fA-F]+)-0000-1000-8000-0026BB765291$", "$1");
     this.format = format;
-    this.isWritable = isWritable;
-    this.isReadable = isReadable;
-    this.isEventable = this instanceof EventableCharacteristic;
     this.description = description;
+    this.isReadable = isReadable;
+    this.isWritable = isWritable;
+    this.subscriber = subscriber;
+    this.unsubscriber = unsubscriber;
   }
 
   @Override
@@ -68,14 +81,13 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
    * @return a future that will complete with the JSON builder for the object.
    */
   protected CompletableFuture<JsonObjectBuilder> makeBuilder(int instanceId) {
-    CompletableFuture<T> futureValue = getValue();
+	  CompletableFuture<T> futureValue = getValue();
 
-    if (futureValue == null) {
-      logger.error("Could not retrieve value " + this.getClass().getName());
-      return null;
-    }
+	    if (futureValue == null) {
+          futureValue = CompletableFuture.completedFuture(getDefault());
+	    }
 
-    return futureValue
+	    return futureValue
         .exceptionally(
             t -> {
               logger.error("Could not retrieve value " + this.getClass().getName(), t);
@@ -84,13 +96,13 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
         .thenApply(
             value -> {
               JsonArrayBuilder perms = Json.createArrayBuilder();
+              if (isReadable) {
+                  perms.add("pr");
+                }
               if (isWritable) {
                 perms.add("pw");
               }
-              if (isReadable) {
-                perms.add("pr");
-              }
-              if (isEventable) {
+              if (subscriber.isPresent()) {
                 perms.add("ev");
               }
               JsonObjectBuilder builder =
@@ -110,7 +122,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
   @Override
   public final void setValue(JsonValue jsonValue) {
     try {
-      this.setValue(convert(jsonValue));
+    	setValue(convert(jsonValue));
     } catch (Exception e) {
       logger.error("Error while setting JSON value", e);
     }
@@ -125,6 +137,18 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
       logger.error("Error retrieving value", e);
       setJsonValue(builder, getDefault());
     }
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void subscribe(HomekitCharacteristicChangeCallback callback) {
+	  subscriber.get().accept(callback);
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void unsubscribe() {
+	  unsubscriber.get().run();
   }
 
   /**

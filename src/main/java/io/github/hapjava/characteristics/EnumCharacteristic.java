@@ -1,10 +1,18 @@
 package io.github.hapjava.characteristics;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
+
+import io.github.hapjava.HomekitCharacteristicChangeCallback;
+import io.github.hapjava.characteristics.carbonmonoxidesensor.CarbonMonoxideDetectedEnum;
+import io.github.hapjava.impl.ExceptionalConsumer;
 
 /**
  * Characteristic that exposes an Enum value. Enums are represented as an Integer value in the
@@ -13,23 +21,35 @@ import javax.json.JsonValue;
  *
  * @author Andy Lintner
  */
-public abstract class EnumCharacteristic extends BaseCharacteristic<Integer> {
+public abstract class EnumCharacteristic<T extends CharacteristicEnum> extends BaseCharacteristic<Integer> {
 
   private final int maxValue;
+  Optional<Supplier<CompletableFuture<T>>> getter;
+  Optional<ExceptionalConsumer<T>> setter;
 
   /**
    * Default constructor
    *
    * @param type a string containing a UUID that indicates the type of characteristic. Apple defines
    *     a set of these, however implementors can create their own as well.
-   * @param isWritable indicates whether the value can be changed.
-   * @param isReadable indicates whether the value can be retrieved.
    * @param description a description of the characteristic to be passed to the consuming device.
    * @param maxValue the number of enum items.
+   * @param isWritable indicates whether the value can be changed.
+   * @param isReadable indicates whether the value can be retrieved.
    */
   public EnumCharacteristic(
-      String type, boolean isWritable, boolean isReadable, String description, int maxValue) {
-    super(type, "int", isWritable, isReadable, description);
+      String type,
+      String description,
+      int maxValue,
+      Optional<Supplier<CompletableFuture<T>>> getter,
+      Optional<ExceptionalConsumer<T>> setter,
+      Optional<Consumer<HomekitCharacteristicChangeCallback>> subscriber,
+      Optional<Runnable> unsubscriber) {
+    super(type, "int", description,
+    		getter.isPresent(),
+    		setter.isPresent(),
+    		subscriber,
+    		unsubscriber);
     this.maxValue = maxValue;
   }
 
@@ -55,6 +75,14 @@ public abstract class EnumCharacteristic extends BaseCharacteristic<Integer> {
     } else {
       throw new IndexOutOfBoundsException("Cannot convert " + jsonValue.getClass() + " to int");
     }
+  }
+  
+  @Override
+  protected CompletableFuture<Integer> getValue() {
+	 if (!getter.isPresent()) {
+		 return null;
+	 }
+	 return getter.get().get().thenApply(T::getCode);
   }
 
   /** {@inheritDoc} */

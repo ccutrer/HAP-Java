@@ -3,8 +3,9 @@ package io.github.hapjava.accessories;
 import io.github.hapjava.HomekitAccessory;
 import io.github.hapjava.HomekitCharacteristicChangeCallback;
 import io.github.hapjava.Service;
-import io.github.hapjava.accessories.properties.CarbonMonoxideDetectedState;
-import io.github.hapjava.impl.services.CarbonMonoxideSensorService;
+import io.github.hapjava.characteristics.carbonmonoxidesensor.CarbonMonoxideDetectedEnum;
+import io.github.hapjava.services.CarbonMonoxideSensorService;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
@@ -24,7 +25,7 @@ public interface CarbonMonoxideSensor extends HomekitAccessory {
    *
    * @return a future that will contain the carbon monoxide sensor's state
    */
-  CompletableFuture<CarbonMonoxideDetectedState> getCarbonMonoxideDetectedState();
+  CompletableFuture<CarbonMonoxideDetectedEnum> getCarbonMonoxideDetectedState();
 
   @Override
   default Collection<Service> getServices() {

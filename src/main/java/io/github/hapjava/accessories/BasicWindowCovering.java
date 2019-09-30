@@ -4,7 +4,8 @@ import io.github.hapjava.HomekitAccessory;
 import io.github.hapjava.HomekitCharacteristicChangeCallback;
 import io.github.hapjava.Service;
 import io.github.hapjava.accessories.properties.WindowCoveringPositionState;
-import io.github.hapjava.impl.services.WindowCoveringService;
+import io.github.hapjava.services.WindowCoveringService;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;

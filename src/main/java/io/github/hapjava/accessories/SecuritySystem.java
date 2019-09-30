@@ -6,7 +6,8 @@ import io.github.hapjava.Service;
 import io.github.hapjava.accessories.properties.CurrentSecuritySystemState;
 import io.github.hapjava.accessories.properties.SecuritySystemAlarmType;
 import io.github.hapjava.accessories.properties.TargetSecuritySystemState;
-import io.github.hapjava.impl.services.SecuritySystemService;
+import io.github.hapjava.services.SecuritySystemService;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;

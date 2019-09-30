@@ -3,7 +3,8 @@ package io.github.hapjava.accessories.thermostat;
 import io.github.hapjava.*;
 import io.github.hapjava.accessories.TemperatureSensor;
 import io.github.hapjava.accessories.properties.ThermostatMode;
-import io.github.hapjava.impl.services.ThermostatService;
+import io.github.hapjava.services.ThermostatService;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;

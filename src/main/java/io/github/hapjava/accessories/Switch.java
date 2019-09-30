@@ -1,7 +1,8 @@
 package io.github.hapjava.accessories;
 
 import io.github.hapjava.*;
-import io.github.hapjava.impl.services.SwitchService;
+import io.github.hapjava.services.SwitchService;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;

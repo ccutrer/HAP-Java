@@ -1,8 +1,16 @@
 package io.github.hapjava.characteristics;
 
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import javax.json.JsonNumber;
 import javax.json.JsonValue;
 import javax.json.JsonValue.ValueType;
+
+import io.github.hapjava.HomekitCharacteristicChangeCallback;
+import io.github.hapjava.impl.ExceptionalConsumer;
 
 /**
  * Characteristic that exposes a Boolean value.
@@ -10,6 +18,9 @@ import javax.json.JsonValue.ValueType;
  * @author Andy Lintner
  */
 public abstract class BooleanCharacteristic extends BaseCharacteristic<Boolean> {
+
+   private final Optional<Supplier<CompletableFuture<Boolean>>> getter,
+    private final Optional<ExceptionalConsumer<Boolean>> setter,
 
   /**
    * Default constructor
@@ -21,8 +32,14 @@ public abstract class BooleanCharacteristic extends BaseCharacteristic<Boolean> 
    * @param description a description of the characteristic to be passed to the consuming device.
    */
   public BooleanCharacteristic(
-      String type, boolean isWritable, boolean isReadable, String description) {
-    super(type, "bool", isWritable, isReadable, description);
+      String type, String description,
+      Optional<Supplier<CompletableFuture<Boolean>>> getter,
+      Optional<ExceptionalConsumer<Boolean>> setter,
+      Optional<Consumer<HomekitCharacteristicChangeCallback>> subscriber,
+      Optional<Runnable> unsubscriber) {
+    super(type, "bool", description, getter.isPresent(), setter.isPresent(), subscriber, unsubscriber);
+    this.getter = getter;
+    this.setter = setter;
   }
 
   /** {@inheritDoc} */
@@ -33,6 +50,16 @@ public abstract class BooleanCharacteristic extends BaseCharacteristic<Boolean> 
     }
     return jsonValue.equals(JsonValue.TRUE);
   }
+
+  @Override
+  protected CompletableFuture<Boolean> getValue() {
+	 return getter.map(booleanGetter -> booleanGetter.get()).get();
+  }
+
+  @Override
+  protected void setValue(Boolean value) throws Exception {
+	  setter.get().accept(value);
+}
 
   /** {@inheritDoc} */
   @Override

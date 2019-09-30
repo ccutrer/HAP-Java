@@ -2,7 +2,8 @@ package io.github.hapjava.accessories;
 
 import io.github.hapjava.*;
 import io.github.hapjava.accessories.properties.DoorState;
-import io.github.hapjava.impl.services.GarageDoorService;
+import io.github.hapjava.services.GarageDoorService;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;

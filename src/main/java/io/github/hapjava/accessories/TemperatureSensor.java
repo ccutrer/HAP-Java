@@ -2,7 +2,8 @@ package io.github.hapjava.accessories;
 
 import io.github.hapjava.*;
 import io.github.hapjava.accessories.properties.TemperatureUnit;
-import io.github.hapjava.impl.services.TemperatureSensorService;
+import io.github.hapjava.services.TemperatureSensorService;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;

@@ -4,7 +4,8 @@ import io.github.hapjava.HomekitAccessory;
 import io.github.hapjava.HomekitCharacteristicChangeCallback;
 import io.github.hapjava.Service;
 import io.github.hapjava.accessories.properties.ContactState;
-import io.github.hapjava.impl.services.ContactSensorService;
+import io.github.hapjava.services.ContactSensorService;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;

@@ -1,11 +1,18 @@
 package io.github.hapjava.characteristics;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import javax.json.JsonNumber;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import io.github.hapjava.HomekitCharacteristicChangeCallback;
+import io.github.hapjava.impl.ExceptionalConsumer;
 
 /**
  * A characteristic that provides a Float value type.
@@ -20,6 +27,8 @@ public abstract class FloatCharacteristic extends BaseCharacteristic<Double> {
   private final double maxValue;
   private final double minStep;
   private final String unit;
+  private final Optional<Supplier<CompletableFuture<Double>>> getter;
+  private final Optional<ExceptionalConsumer<Double>> setter;
 
   /**
    * Default constructor
@@ -36,14 +45,16 @@ public abstract class FloatCharacteristic extends BaseCharacteristic<Double> {
    */
   public FloatCharacteristic(
       String type,
-      boolean isWritable,
-      boolean isReadable,
       String description,
       double minValue,
       double maxValue,
       double minStep,
-      String unit) {
-    super(type, "float", isWritable, isReadable, description);
+      String unit,
+      Optional<Supplier<CompletableFuture<Double>>> getter,
+      Optional<ExceptionalConsumer<Double>> setter,
+      Optional<Consumer<HomekitCharacteristicChangeCallback>> subscriber,
+      Optional<Runnable> unsubscriber) {
+    super(type, "float", description, getter.isPresent(), setter.isPresent(), subscriber, unsubscriber);
     this.minValue = minValue;
     this.maxValue = maxValue;
     this.minStep = minStep;
@@ -75,8 +86,11 @@ public abstract class FloatCharacteristic extends BaseCharacteristic<Double> {
    */
   @Override
   protected final CompletableFuture<Double> getValue() {
+	  if (!getter.isPresent()) {
+		  return null;
+	  }
     double rounder = 1 / this.minStep;
-    return getDoubleValue()
+    return getter.get().get()
         .thenApply(d -> d == null ? null : Math.round(d * rounder) / rounder)
         .thenApply(
             d -> {
@@ -103,16 +117,14 @@ public abstract class FloatCharacteristic extends BaseCharacteristic<Double> {
             });
   }
 
+  @Override
+  protected void setValue(Double value) throws Exception {
+	  setter.get().accept(value);
+}
+
   /** {@inheritDoc} */
   @Override
   protected Double getDefault() {
     return minValue;
   }
-
-  /**
-   * Supplies the value of this characteristic as a double.
-   *
-   * @return a future that will contain the value.
-   */
-  protected abstract CompletableFuture<Double> getDoubleValue();
 }

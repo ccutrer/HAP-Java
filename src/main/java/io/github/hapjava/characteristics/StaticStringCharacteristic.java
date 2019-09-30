@@ -1,5 +1,6 @@
 package io.github.hapjava.characteristics;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
@@ -25,7 +26,7 @@ public class StaticStringCharacteristic extends BaseCharacteristic<String> {
    * @param value the value of the static string.
    */
   public StaticStringCharacteristic(String type, String description, String value) {
-    super(type, "string", false, true, description);
+    super(type, "string", description, true, false, Optional.empty(), Optional.empty());
     this.value = value;
   }
 

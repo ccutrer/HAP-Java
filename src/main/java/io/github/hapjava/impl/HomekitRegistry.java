@@ -3,7 +3,8 @@ package io.github.hapjava.impl;
 import io.github.hapjava.HomekitAccessory;
 import io.github.hapjava.Service;
 import io.github.hapjava.characteristics.Characteristic;
-import io.github.hapjava.impl.services.AccessoryInformationService;
+import io.github.hapjava.services.AccessoryInformationService;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
