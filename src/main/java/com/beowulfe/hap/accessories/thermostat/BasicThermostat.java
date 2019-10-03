@@ -90,14 +90,12 @@ public interface BasicThermostat extends HomekitAccessory, TemperatureSensor {
   }
 
   /**
-   * Retrieves the temperature unit of the thermostat. This is informational
-   * only, and HomeKit tells the user that this is the unit that the device
-   * is physically displaying.
+   * Retrieves the temperature unit of the thermostat. This is informational only, and HomeKit tells
+   * the user that this is the unit that the device is physically displaying.
    *
    * @return the temperature unit of the thermostat.
    */
   default TemperatureUnit getTemperatureUnit() {
     return TemperatureUnit.CELSIUS;
   }
-
 }

@@ -1,7 +1,6 @@
 package com.beowulfe.hap.accessories;
 
 import com.beowulfe.hap.*;
-import com.beowulfe.hap.accessories.properties.TemperatureUnit;
 import com.beowulfe.hap.impl.services.TemperatureSensorService;
 import java.util.Collection;
 import java.util.Collections;
