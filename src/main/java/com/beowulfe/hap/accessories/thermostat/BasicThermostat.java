@@ -98,4 +98,24 @@ public interface BasicThermostat extends HomekitAccessory, TemperatureSensor {
   default TemperatureUnit getTemperatureUnit() {
     return TemperatureUnit.CELSIUS;
   }
+
+  /**
+   * set default temperature unit of the thermostat. this is the unit thermostat use to display
+   * temprature. the homekit interface uses celsius.
+   *
+   * @param unit the temperature unit of the thermostat.
+   */
+  default void setTemperatureUnit(TemperatureUnit unit) {
+    // override depending on the thermostat if required.
+  }
+
+  /**
+   * subscribe to unit changes.
+   *
+   * @param callback callback
+   */
+  default void subscribeTemperatureUnit(final HomekitCharacteristicChangeCallback callback) {}
+
+  /** unsubscribe from unit changes. */
+  default void unsubscribeTemperatureUnit() {}
 }
